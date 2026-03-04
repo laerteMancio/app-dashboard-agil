@@ -7,11 +7,12 @@ export default function Tanques() {
   const [erroQtd, setErroQtd] = useState(null);
 
   useEffect(() => {
-    if (!data) return;
-    api.get(`/tanques?data=${data}`)
-      .then(res => setTotalQtd(res.data))
-      .catch(err => setErroQtd(err.message));
-  }, [data]);
+  if (!data) return;
+
+  api.get(`/tanques?data=${data}`)
+    .then(res => setTotalQtd(res.data))
+    .catch(err => setErroQtd(err.response?.data?.error || err.message));
+}, [data]);
 
   return (
     <div className="container-tanques">

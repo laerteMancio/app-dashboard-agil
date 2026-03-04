@@ -7,11 +7,12 @@ export default function Contas() {
   const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    if (!dataConta) return;
-    api.get(`/contas-a-pagar?data=${dataConta}`)
-      .then(res => setContas(res.data))
-      .catch(err => setErro(err.message));
-  }, [dataConta]);
+  if (!dataConta) return;
+
+  api.get(`/contas-a-pagar?data=${dataConta}`)
+    .then(res => setContas(res.data))
+    .catch(err => setErro(err.response?.data?.error || err.message));
+}, [dataConta]);
 
   return (
     <div className="container-contas-a-pagar">

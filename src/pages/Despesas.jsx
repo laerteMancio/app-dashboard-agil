@@ -9,9 +9,12 @@ export default function Despesas() {
 
   useEffect(() => {
     if (!inicio || !fim) return;
+
+    // agora a URL é relativa -> /api/despesas
     api.get(`/despesas?inicio=${inicio}&fim=${fim}`)
       .then(res => setDespesas(res.data))
-      .catch(err => setErro(err.message));
+      .catch(err => setErro(err.response?.data?.error || err.message));
+
   }, [inicio, fim]);
 
   return (
@@ -25,7 +28,9 @@ export default function Despesas() {
         despesas.map((d, i) => (
           <div key={i} className="card">
             <div className="card-title">{d.DATA}</div>
-            <div className="card-content">{Number(d.VALOR).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+            <div className="card-content">
+              {Number(d.VALOR).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            </div>
           </div>
         ))
       ) : <p className="info-message">Nenhuma despesa encontrada</p>}
