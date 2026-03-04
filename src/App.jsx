@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, BarChart, Bar
@@ -60,14 +60,13 @@ export default function App() {
   }));
 
   // ======================= BUSCAR DESPESAS =======================
-  async function buscarTotal() {
+  const buscarTotal = useCallback(async () => {
     if (!dataInicio || !dataFim) {
       setErro("Por favor, informe as duas datas");
       return;
     }
     setErro(null);
     try {
-      const params = new URLSearchParams({ inicio: dataInicio, fim: dataFim });
       const res = await api.get(`/despesas?inicio=${dataInicio}&fim=${dataFim}`);
       const json = res.data;
 
@@ -83,10 +82,10 @@ export default function App() {
     } catch(e) {
       setErro(e.message);
     }
-  }
+  }, [dataInicio, dataFim]);
 
   // ======================= BUSCAR TANQUES =======================
-  async function buscarTanques() {
+  const buscarTanques = useCallback(async () => {
     if (!data) {
       setErroQtd("Por favor, informe a data");
       return;
@@ -98,10 +97,10 @@ export default function App() {
     } catch(e) {
       setErroQtd(e.message);
     }
-  }
+  }, [data]);
 
   // ======================= BUSCAR CONTAS =======================
-  async function buscarContas() {
+  const buscarContas = useCallback(async () => {
     if(!dataConta){
       setErroContas("Por favor, informe a data");
       return;
@@ -113,12 +112,12 @@ export default function App() {
     } catch(e){
       setErroContas(e.message);
     }
-  }
+  }, [dataConta]);
 
   // ======================= EFFECTS =======================
-  useEffect(()=>{ if(dataInicio && dataFim) buscarTotal() },[dataInicio,dataFim]);
-  useEffect(()=>{ if(data) buscarTanques() },[data]);
-  useEffect(()=>{ if(dataConta) buscarContas() },[dataConta]);
+  useEffect(()=>{ if(dataInicio && dataFim) buscarTotal() },[dataInicio,dataFim,buscarTotal]);
+  useEffect(()=>{ if(data) buscarTanques() },[data,buscarTanques]);
+  useEffect(()=>{ if(dataConta) buscarContas() },[dataConta,buscarContas]);
 
   // ======================= RENDER =======================
   return (
