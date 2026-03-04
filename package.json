@@ -24,6 +24,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://191.252.56.116",
   "eslintConfig": {
     "extends": [
       "react-app",

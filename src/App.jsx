@@ -67,7 +67,7 @@ export default function App() {
     }
     setErro(null);
     try {
-      const res = await api.get(`/despesas?inicio=${dataInicio}&fim=${dataFim}`);
+      const res = await api.get(`/despesas?inicio=${dataInicio}&fim=${dataFim}`);      
       const json = res.data;
 
       const todasAsDatas = gerarTodasAsDatas(dataInicio,dataFim);
