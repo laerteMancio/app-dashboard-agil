@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-   baseURL: process.env.REACT_APP_API_URL || "/api" // usa proxy
+  baseURL: '/api',  // agora aponta para as rotas da Vercel (HTTPS)
 });
 
 export default api;
